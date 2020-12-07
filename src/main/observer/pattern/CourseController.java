@@ -102,7 +102,20 @@ public class CourseController extends JPanel implements Observer, ChangeListener
 		for (int i = sliders.size(); i < newCourses.size(); i++) {
 			this.addCourse((CourseRecord) newCourses.elementAt(i));
 		}
-	} 
+	}
+
+	/**
+	 * Informs this CourseController that a new course has been added
+	 *
+	 * @param o the CourseData subject that has changed
+	 */
+	@Override
+	public void update(Object o) {
+		Vector<CourseRecord> newCourses = (Vector<CourseRecord>) o;
+		for (int i = sliders.size(); i < newCourses.size(); i++) {
+			this.addCourse((CourseRecord) newCourses.elementAt(i));
+		}
+	}
 
 	/**
 	 * Manages the creation of a new course. Called when the "New Course" button is pressed.

@@ -28,7 +28,7 @@ public class PieChartObserver extends JPanel implements Observer  {
                         LayoutConstants.graphHeight + 2 * LayoutConstants.yOffset)
         );
 
-        
+
         this.setBackground(Color.white);
     }
 
@@ -61,6 +61,14 @@ public class PieChartObserver extends JPanel implements Observer  {
     public void update(Observable o) {
         CourseData data = (CourseData) o;
         this.courseData = data.getUpdate();
+
+        this.revalidate();
+        this.repaint();
+    }
+
+    @Override
+    public void update(Object o) {
+        this.courseData = (Vector<CourseRecord>) o;
 
         this.revalidate();
         this.repaint();
