@@ -68,7 +68,17 @@ public class PieChartObserver extends JPanel implements Observer  {
 
     @Override
     public void update(Object o) {
-        this.courseData = (Vector<CourseRecord>) o;
+        CourseRecord record = (CourseRecord) o;
+
+        boolean doContain = false;
+        for (CourseRecord courseRecord : courseData)
+            if (courseRecord.getName().equals(record.getName())){
+                courseRecord.setNumOfStudents(record.getNumOfStudents());
+                doContain = true;
+            }
+
+        if (!doContain) // We need to add the bar
+            courseData.add(record);
 
         this.revalidate();
         this.repaint();
