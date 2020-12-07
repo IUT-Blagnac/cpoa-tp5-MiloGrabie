@@ -28,6 +28,7 @@ public class PieChartObserver extends JPanel implements Observer  {
                         LayoutConstants.graphHeight + 2 * LayoutConstants.yOffset)
         );
 
+        
         this.setBackground(Color.white);
     }
 
