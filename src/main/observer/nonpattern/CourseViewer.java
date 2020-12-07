@@ -1,26 +1,19 @@
 package observer.nonpattern;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import observer.CourseRecord;
 import observer.LayoutConstants;
+
+import static java.lang.Math.abs;
 
 /**
  * Presents a barchart view of a set of courses and their marks. No pattern is
@@ -29,6 +22,9 @@ import observer.LayoutConstants;
 @SuppressWarnings("serial")
 public class CourseViewer extends JFrame implements ActionListener,
 		ChangeListener {
+
+	private final JPanel panelPieChart;
+	private final JPanel barChartPanel;
 
 	/**
 	 * Create a CourseViewer object
@@ -47,9 +43,12 @@ public class CourseViewer extends JFrame implements ActionListener,
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 
+		this.setPreferredSize(new Dimension(600,400));
+
 		scrollPane = new JScrollPane(coursePanel,
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
 		// Layout code
 		constraints.weightx = 0.0;
 		constraints.weighty = 1.0;
@@ -74,12 +73,32 @@ public class CourseViewer extends JFrame implements ActionListener,
 		this.getContentPane().add(sliderPanel, constraints);
 
 		// Layout code
+		barChartPanel = new JPanel();
+		barChartPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		// the bar chart will be drawn over this panel
-		this.getContentPane().add(new JPanel(), constraints);
+		this.getContentPane().add(barChartPanel, constraints);
+
+		// Layout code
+		panelPieChart = new JPanel();
+
+		this.setSize(
+				new Dimension(
+						LayoutConstants.graphWidth + 2 * LayoutConstants.yOffset,
+						LayoutConstants.graphHeight + 2 * LayoutConstants.yOffset)
+		);
+
+		constraints.weightx = 1.5;
+		constraints.weighty = 1.5;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		// the bar chart will be drawn over this panel
+		this.getContentPane().add(panelPieChart, constraints);
+
 		this.setVisible(true);
 	}
 
@@ -119,9 +138,12 @@ public class CourseViewer extends JFrame implements ActionListener,
 			coursePanel.add(slider);
 			coursePanel.revalidate();
 			sliders.addElement(slider);
-			this.setSize(LayoutConstants.xOffset + 50 + this.sliders.size()
-					* (LayoutConstants.barWidth + LayoutConstants.barSpacing),
-					(sliders.size() + 1) * 100 + this.button.getHeight());
+
+			this.setSize(new Dimension(3 * LayoutConstants.xOffset
+					+ (LayoutConstants.barSpacing + LayoutConstants.barWidth)
+					* this.sliders.size(), LayoutConstants.graphHeight + 2
+					* LayoutConstants.yOffset));
+
 			this.sliderPanel.revalidate();
 			this.coursePanel.revalidate();
 			this.repaint();
@@ -135,6 +157,7 @@ public class CourseViewer extends JFrame implements ActionListener,
 		for (int i = 0; i < sliders.size(); i++) {
 			JSlider record = sliders.elementAt(i);
 			g.setColor(LayoutConstants.courseColours[i]);
+
 			g.fillRect(
 					LayoutConstants.xOffset + (i + 1)
 							* LayoutConstants.barSpacing + i
@@ -150,7 +173,49 @@ public class CourseViewer extends JFrame implements ActionListener,
 							* LayoutConstants.barWidth, LayoutConstants.yOffset
 							+ LayoutConstants.graphHeight + 20);
 		}
+
+		drawPie((Graphics2D) g, panelPieChart.getBounds(), processSlices());
 	}
+
+	private Part[] processSlices() {
+		Part[] slices = new Part[sliders.size()];
+		for (int i = 0; i < sliders.size(); i++){
+			JSlider record = sliders.elementAt(i);
+			int hashCode = abs(record.getName().hashCode());
+			Color c = new Color(hashCode%255,(hashCode+100)%255,(hashCode+200)%255,255);
+			slices[i] = new Part(record.getValue(), c);
+		}
+		return slices;
+	}
+
+	class Part {
+		double value;
+		Color color;
+
+		public Part(double value, Color color) {
+			this.value = value;
+			this.color = color;
+		}
+	}
+
+	void drawPie(Graphics2D g, Rectangle area, Part[] slices) {
+		double total = 0.0D;
+		for (int i = 0; i < slices.length; i++) {
+			total += slices[i].value;
+		}
+		double curValue = 0.0D;
+		int startAngle = 0;
+		for (int i = 0; i < slices.length; i++) {
+			startAngle = (int) (curValue * 360 / total);
+			int arcAngle = (int) (slices[i].value * 360 / total);
+
+			g.setColor(slices[i].color);
+			g.fillArc(area.x, LayoutConstants.yOffset + area.y, area.width, area.height, startAngle, arcAngle);
+			curValue += slices[i].value;
+		}
+
+	}
+
 
 	/**
 	 * Manages the creation of a new course. Called when "New Course" button is pressed.

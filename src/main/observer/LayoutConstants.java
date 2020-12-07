@@ -8,11 +8,13 @@ import java.awt.Graphics;
 */
 public class LayoutConstants {
 
-	public static final int xOffset = 350;
+	public static final int xOffset = 275;
 
 	public static final int yOffset = 30;
 
 	public static final int graphHeight = 210;
+
+	public static final int graphWidth = 210;
 
 	public static final int maxValue = 100;
 

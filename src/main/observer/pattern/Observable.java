@@ -16,8 +16,7 @@ public abstract class Observable {
 	/**
 	 * Attach to this Subject
 	 * 
-	 * @param o
-	 *            the Observer that wishes to attach
+	 * @param o the Observer that wishes to attach
 	 */
 	public void attach(Observer o) {
 		this.observers.addElement(o);

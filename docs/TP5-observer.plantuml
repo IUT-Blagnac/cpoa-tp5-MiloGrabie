@@ -1,6 +1,5 @@
 @startuml
 
-
 class CourseViewer {
   - button : JButton
   - coursePanel : JPanel

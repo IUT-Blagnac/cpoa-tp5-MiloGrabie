@@ -26,11 +26,11 @@ import observer.CourseRecord;
  */
 @SuppressWarnings("serial")
 public class CourseController extends JPanel implements Observer, ChangeListener, ActionListener {
+
 	/**
 	 * Constructs a CourseController object
 	 * 
-	 * @param courses
-	 *            a set of courses and their marks
+	 * @param courses a set of courses and their marks
 	 */
 	public CourseController(CourseData courses) {
 		this.courseData = courses;
@@ -71,8 +71,7 @@ public class CourseController extends JPanel implements Observer, ChangeListener
 	/**
 	 * Add a new course
 	 * 
-	 * @param record
-	 *            the new course record to be added
+	 * @param record the new course record to be added
 	 */
 	public void addCourse(CourseRecord record) {
 		JSlider slider = new JSlider();
@@ -95,8 +94,7 @@ public class CourseController extends JPanel implements Observer, ChangeListener
 	/**
 	 * Informs this CourseController that a new course has been added
 	 * 
-	 * @param o
-	 *            the CourseData subject that has changed
+	 * @param o the CourseData subject that has changed
 	 */
 	 public void update(Observable o) {
 		CourseData courses = (CourseData) o;
@@ -109,8 +107,7 @@ public class CourseController extends JPanel implements Observer, ChangeListener
 	/**
 	 * Manages the creation of a new course. Called when the "New Course" button is pressed.
 	 * 
-	 * @param arg0
-	 *            not used
+	 * @param arg0 not used
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 		String input = JOptionPane.showInputDialog("Please enter new course name:");
@@ -123,8 +120,7 @@ public class CourseController extends JPanel implements Observer, ChangeListener
 	/**
 	 * Handles the changing of the marks for a course (changing of a JSlider)
 	 * 
-	 * @param arg0
-	 *            the JSlider that has changed
+	 * @param arg0 the JSlider that has changed
 	 */
 	public void stateChanged(ChangeEvent arg0) {
 		JSlider slider = (JSlider) arg0.getSource();
@@ -145,8 +141,13 @@ public class CourseController extends JPanel implements Observer, ChangeListener
 
 		CourseController controller = new CourseController(data);
 		BarChartObserver bar = new BarChartObserver(data);
+		PieChartObserver pie = new PieChartObserver(data);
 
 		JScrollPane scrollPane = new JScrollPane(bar,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+		JScrollPane scrollPanePie = new JScrollPane(pie,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
@@ -167,6 +168,11 @@ public class CourseController extends JPanel implements Observer, ChangeListener
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		frame.getContentPane().add(scrollPane, constraints);
+		constraints.weightx = 0.75;
+		constraints.weighty = 1.0;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		frame.getContentPane().add(scrollPanePie, constraints);
 		frame.pack();
 		frame.setVisible(true);
 	}

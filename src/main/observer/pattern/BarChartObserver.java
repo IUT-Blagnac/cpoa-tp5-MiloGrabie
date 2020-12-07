@@ -16,6 +16,7 @@ import observer.LayoutConstants;
  */
 @SuppressWarnings("serial")
 public class BarChartObserver extends JPanel implements Observer {
+
 	/**
 	 * Creates a BarChartObserver object
 	 * 
@@ -35,8 +36,7 @@ public class BarChartObserver extends JPanel implements Observer {
 	/**
 	 * Paint method
 	 * 
-	 * @param g
-	 *            a Graphics object on which to paint
+	 * @param g a Graphics object on which to paint
 	 */
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -66,8 +66,7 @@ public class BarChartObserver extends JPanel implements Observer {
 	/**
 	 * Informs this observer that the observed CourseData object has changed
 	 * 
-	 * @param o
-	 *            the observed CourseData object that has changed
+	 * @param o the observed CourseData object that has changed
 	 */
 	public void update(Observable o) {
 		CourseData data = (CourseData) o;
@@ -77,6 +76,7 @@ public class BarChartObserver extends JPanel implements Observer {
 				+ (LayoutConstants.barSpacing + LayoutConstants.barWidth)
 				* this.courseData.size(), LayoutConstants.graphHeight + 2
 				* LayoutConstants.yOffset));
+
 		this.revalidate();
 		this.repaint();
 	}
