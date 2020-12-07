@@ -3,6 +3,7 @@ package observer.pattern;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -17,13 +18,17 @@ import observer.LayoutConstants;
 @SuppressWarnings("serial")
 public class BarChartObserver extends JPanel implements Observer {
 
+	ArrayList<ObserverType> Types = new ArrayList<>();
+
 	/**
 	 * Creates a BarChartObserver object
 	 * 
-	 * @param data
-	 *            a CourseData object to observe
+	 * @param data a CourseData object to observe
 	 */
 	public BarChartObserver(CourseData data) {
+		Types.add(ObserverType.CREATE);
+		Types.add(ObserverType.UPDATE);
+		Types.add(ObserverType.REMOVE);
 		data.attach(this);
 		this.courseData = data.getUpdate();
 		this.setPreferredSize(new Dimension(2 * LayoutConstants.xOffset
@@ -106,6 +111,11 @@ public class BarChartObserver extends JPanel implements Observer {
 
 		this.revalidate();
 		this.repaint();
+	}
+
+	@Override
+	public ArrayList<ObserverType> getTypes() {
+		return Types;
 	}
 
 	private Vector<CourseRecord> courseData;

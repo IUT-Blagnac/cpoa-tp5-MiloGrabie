@@ -5,12 +5,15 @@ import observer.LayoutConstants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
 import static java.lang.Math.abs;
 
 public class PieChartObserver extends JPanel implements Observer  {
+
+    ArrayList<ObserverType> Types = new ArrayList<>();
 
     /**
      * Creates a BarChartObserver object
@@ -19,6 +22,9 @@ public class PieChartObserver extends JPanel implements Observer  {
      *            a CourseData object to observe
      */
     public PieChartObserver(CourseData data) {
+        Types.add(ObserverType.CREATE);
+        Types.add(ObserverType.UPDATE);
+        Types.add(ObserverType.REMOVE);
         data.attach(this);
         this.courseData = data.getUpdate();
 
@@ -82,6 +88,11 @@ public class PieChartObserver extends JPanel implements Observer  {
 
         this.revalidate();
         this.repaint();
+    }
+
+    @Override
+    public ArrayList<ObserverType> getTypes() {
+        return Types;
     }
 
     private Vector<CourseRecord> courseData;
