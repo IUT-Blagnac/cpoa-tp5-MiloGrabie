@@ -1,0 +1,75 @@
+@startuml
+
+
+class CourseViewer {
+  - button : JButton
+  - coursePanel : JPanel
+  - scrollPane : JScrollPane
+  - sliderPanel : JPanel
+  - sliders : Vector<JSlider>
+  + CourseViewer()
+  + actionPerformed()
+  + addCourse()
+  {static} + main()
+  + paint()
+  + stateChanged()
+}
+
+  CourseViewer .up.|> ActionListener
+  CourseViewer .up.|> ChangeListener
+  CourseViewer -up-|> JFrame
+
+class BarChartObserver {
+  - courseData : Vector<CourseRecord>
+  + BarChartObserver()
+  + paint()
+  + update()
+}
+
+
+class CourseController {
+  - coursePanel : JPanel
+  - sliders : Vector<JSlider>
+  + CourseController()
+  + actionPerformed()
+  + addCourse()
+  {static} + main()
+  + stateChanged()
+  + update()
+}
+
+
+class CourseData {
+  - courseData : Vector<CourseRecord>
+  + CourseData()
+  + addCourseRecord()
+  + changeCourseRecord()
+  + getUpdate()
+}
+
+
+abstract class Observable {
+  # observers : Vector<Observer>
+  + Observable()
+  + attach()
+  + detach()
+  {abstract} + getUpdate()
+  + notifyObservers()
+}
+
+
+interface Observer {
+  {abstract} + update()
+}
+
+
+BarChartObserver .up.|> Observer
+BarChartObserver -up-|> JPanel
+CourseController .up.|> ActionListener
+CourseController .up.|> ChangeListener
+CourseController .up.|> Observer
+CourseController -up-|> JPanel
+CourseController o-- CourseData : courseData
+CourseData -up-|> Observable
+
+@enduml
