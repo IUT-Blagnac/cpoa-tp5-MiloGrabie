@@ -158,8 +158,7 @@ public class CourseController extends JPanel implements Observer, ChangeListener
 	/**
 	 * Sets up an initial set of three courses
 	 * 
-	 * @param args
-	 *            not used
+	 * @param args not used
 	 */
 	public static void main(String[] args) {
 		CourseData data = new CourseData();
@@ -210,4 +209,13 @@ public class CourseController extends JPanel implements Observer, ChangeListener
 	private Vector<JSlider> sliders;
 
 	private JPanel coursePanel;
+
+	public Vector<JSlider> getSliders() {
+		return sliders;
+	}
+
+	public CourseData getCourseData() {
+		return courseData;
+	}
+
 }

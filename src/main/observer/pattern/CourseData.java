@@ -76,4 +76,8 @@ public class CourseData extends Observable {
 	}
 
 	private Vector<CourseRecord> courseData;
+
+	public Vector<CourseRecord> getCourseData() {
+		return courseData;
+	}
 }

@@ -115,6 +115,10 @@ public class PieChartObserver extends JPanel implements Observer  {
         }
 
     }
+
+    public Vector<CourseRecord> getCourseData() {
+        return courseData;
+    }
 }
 
 class Part {
