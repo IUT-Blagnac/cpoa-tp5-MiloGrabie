@@ -35,7 +35,7 @@ public abstract class Observable {
 				observers.removeElementAt(i);
 		}
 	}
-	
+
 
 	/**
 	 * Notify all Observers that Subject has changed
