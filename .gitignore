@@ -33,3 +33,5 @@ Gemfile.lock
 .idea
 *.iml
 /.idea/
+
+build
